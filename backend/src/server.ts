@@ -15,9 +15,11 @@ app.get("/api/cards/:id", (req, res) => {
 });
 
 app.get("/api/search", (req, res) => {
-    res.json({
+    if(res.status(200)){
+        res.json({
         search: req.query.search
     });
+    }
 });
 
 app.post("/api/cards", (req, res) => {
