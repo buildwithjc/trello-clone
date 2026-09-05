@@ -40,6 +40,14 @@ app.get("/api/error", (_req, _res) => {
 
 app.use("/api/cards", cardRoutes);
 
+app.use((error: Error, _req, res, _next) => {
+    console.error(error);
+
+    res.status(500).json({
+        error: "Internal server error"
+    });
+});
+
 app.listen(3000, () => {
     console.log("Server running on http://localhost:3000");
 });
