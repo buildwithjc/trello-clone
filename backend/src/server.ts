@@ -1,5 +1,6 @@
-import express from "express";
+import express, { Request, Response, NextFunction } from "express";
 import cardRoutes from "./routes/card.routes.js";
+import { env } from "./config/env.js";
 const app = express();
 
 app.use(express.json());
@@ -40,7 +41,7 @@ app.get("/api/error", (_req, _res) => {
 
 app.use("/api/cards", cardRoutes);
 
-app.use((error: Error, _req, res, _next) => {
+app.use((error: Error, _req: Request, res: Response, _next: NextFunction) => {
     console.error(error);
 
     res.status(500).json({
@@ -48,6 +49,6 @@ app.use((error: Error, _req, res, _next) => {
     });
 });
 
-app.listen(3000, () => {
-    console.log("Server running on http://localhost:3000");
+app.listen(env.port, () => {
+    console.log(`Server running on http://localhost:${env.port}`);
 });
