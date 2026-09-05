@@ -1,4 +1,5 @@
 import express from "express";
+import cardRoutes from "./routes/card.routes";
 
 const app = express();
 
@@ -20,20 +21,6 @@ app.get("/api/health", (_req, res) => {
     res.json({ status: "ok" });
 });
 
-app.get("/api/cards/:id", (req, res) => {
-    if (req.params.id === "999") {
-        res.status(404).json({
-            error: "Card not found"
-        });
-
-        return;
-    }
-
-    res.status(200).json({
-        cardId: req.params.id
-    });
-});
-
 app.get("/api/search", (req, res) => {
     if (!req.query.search) {
         res.status(400).json({
@@ -48,11 +35,7 @@ app.get("/api/search", (req, res) => {
     });
 });
 
-app.post("/api/cards", (req, res) => {
-    res.json({
-        received: req.body
-    });
-});
+app.use("/api/cards", cardRoutes);
 
 app.listen(3000, () => {
     console.log("Server running on http://localhost:3000");
