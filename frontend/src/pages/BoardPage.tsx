@@ -109,7 +109,7 @@ function BoardPage() {
     return (
         <>
             <button onClick={addList}>
-                Add Listsdsd
+                Add List
             </button>
 
             <div className="flex gap-4 mt-4">

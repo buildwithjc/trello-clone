@@ -1,7 +1,13 @@
 import { Request, Response } from "express";
+import { getCardById } from "../services/service.js";
 
-export const getCard = (req: Request, res: Response) => {
-    if (req.params.id === "999") {
+export const getCard = (
+    req: Request<{ id: string }>,
+    res: Response
+) => {
+    const card = getCardById(req.params.id);
+
+    if (!card) {
         res.status(404).json({
             error: "Card not found"
         });
@@ -9,9 +15,7 @@ export const getCard = (req: Request, res: Response) => {
         return;
     }
 
-    res.status(200).json({
-        cardId: req.params.id
-    });
+    res.status(200).json(card);
 };
 
 export const createCard = (req: Request, res: Response) => {

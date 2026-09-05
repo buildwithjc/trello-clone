@@ -1,6 +1,5 @@
 import express from "express";
-import cardRoutes from "./routes/card.routes";
-
+import cardRoutes from "./routes/card.routes.js";
 const app = express();
 
 app.use(express.json());
@@ -33,6 +32,10 @@ app.get("/api/search", (req, res) => {
     res.status(200).json({
         search: req.query.search
     });
+});
+
+app.get("/api/error", (_req, _res) => {
+    throw new Error("Something went wrong");
 });
 
 app.use("/api/cards", cardRoutes);
