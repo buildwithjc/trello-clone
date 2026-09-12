@@ -1,10 +1,63 @@
 // use prisma-next
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  username  String?
-  name      String?
-  createdAt TimestamptzString @default(now())
-  updatedAt temporal.updatedAtString()
+  id          Int         @id @default(autoincrement())
+  email       String      @unique
+  username    String?
+  name        String?
+  workspaces  Workspace[]
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+}
+
+model Workspace {
+  id          Int       @id @default(autoincrement())
+  name        String
+  owner       User      @relation(fields: [ownerId], references: [id])
+  ownerId     Int
+  projects    Project[]
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+}
+
+model Project {
+  id          Int       @id @default(autoincrement())
+  name        String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+  workspaceId Int
+  boards      Board[]
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+}
+
+model Board {
+  id          Int       @id @default(autoincrement())
+  name        String
+  project     Project   @relation(fields: [projectId], references: [id])
+  projectId   Int
+  lists       List[]
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+}
+
+model List {
+  id          Int       @id @default(autoincrement())
+  name        String
+  board       Board     @relation(fields: [boardId], references: [id])
+  boardId     Int
+  position    Int
+  cards       Card[]
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
+}
+
+model Card {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String?
+  list        List      @relation(fields: [listId], references: [id])
+  listId      Int
+  position    Int
+  createdAt   TimestamptzString @default(now())
+  updatedAt   temporal.updatedAtString()
 }
