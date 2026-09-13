@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from "express";
 import cardRoutes from "./routes/card.routes.js";
+import { findUserById, createUser } from "./repositories/user.repository.js";
 import { env } from "./config/env.js";
 const app = express();
 
@@ -15,6 +16,28 @@ app.use("/api", (req, res, next) => {
     }
 
     next();
+});
+
+app.post("/api/users", async (req, res) => {
+    const { email, username, name } = req.body;
+
+    const user = await createUser(email, username, name);
+
+    res.status(201).json(user);
+});
+
+app.get("/api/users/:id", async (req, res) => {
+    const user = await findUserById(Number(req.params.id));
+
+    if (!user) {
+        res.status(404).json({
+            error: "User not found"
+        });
+
+        return;
+    }
+
+    res.json(user);
 });
 
 app.get("/api/health", (_req, res) => {
